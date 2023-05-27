@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth"
+import { getFirestore, addDoc, getDocs, collection, query, onSnapshot, deleteDoc, updateDoc, doc, orderBy } from "firebase/firestore"
 
 const firebaseConfig = {
   apiKey: "AIzaSyDzA3bEFBskUFt6gFHUmhL7O6_Ek90b-hk",
@@ -12,4 +13,14 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 
-export const authServise = getAuth();
+export const authService = getAuth();
+export const dbService = getFirestore();
+export const dbAddDoc = addDoc;
+export const dbGetDocs = getDocs;
+export const dbCollection = collection;
+export const dbQuery = query;
+export const dbOnSnapShot = onSnapshot;
+export const dbDoc = doc;
+export const dbdeleteDoc = deleteDoc;
+export const dbUpdataDoc = updateDoc;
+export const dbOrderBy = orderBy;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup  } from "firebase/auth";
-import { authServise } from "../fbase";
+import { authService } from "../fbase";
 
 function Auth() {
 
@@ -22,7 +22,7 @@ function Auth() {
         e.preventDefault();
 
         try {
-                await signInWithEmailAndPassword(authServise, email, password)
+            await signInWithEmailAndPassword(authService, email, password)
         } catch(e) {
             console.log(e.message);
         }
@@ -30,7 +30,7 @@ function Auth() {
     const onSocialClick = async() => {
 
         let provider = new GoogleAuthProvider();
-        await signInWithPopup(authServise, provider);
+        await signInWithPopup(authService, provider);
     }
     const onPhoneClick = () => {
         navigate('/signPhone');
@@ -59,7 +59,7 @@ function Auth() {
             </form>
             <div>
                 <span>Are you first logIn?</span>
-                <Link to="/sign">Create Account</Link>
+                <Link to="/createAccount">Create Account</Link>
             </div>
             <div>
                 <button name="Google" onClick={onSocialClick}>Continue with Google</button>

@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { dbCollection, dbOnSnapShot, dbQuery, dbService, dbOrderBy } from "../fbase";
-import List from "../components/List";
+import List from "../components/List.js"
 import MakeList from "../components/MakeList.js"
 import styled from 'styled-components';
 
@@ -14,8 +14,8 @@ function ToDoList({userObj}) {
     let [list, setList] = useState([]);
     let [count, setCount] = useState(0);
 
-    const [checkedItems, setCheckedItems] = useState(new Set());     
-
+    const [checkedItems, setCheckedItems] = useState(new Set()); 
+    
     useEffect(() => {
         const q = dbQuery(dbCollection(dbService, userUID.toString()), dbOrderBy("createAt"));
         dbOnSnapShot(q, (snapshot) => {
@@ -25,26 +25,37 @@ function ToDoList({userObj}) {
                     }))
             setList(todoList);
         });
-        console.log("loading");
     },[])
 
     useEffect(() => {
-        console.log("change");
-    }, [list]);
+        let checkCount = 0;
+        
+        for(let i=0; i<list.length; i++) {
+            if(list[i].isChecked) {
+                checkedItems.add(list[i].id);
+                checkCount++;
+            }
+            setCheckedItems(checkedItems)
+        }
+        setCount(checkCount);
+    },[list])
+
+
 
     return(
-        <>
-            <input type="checkbox"/>
+        <>  
             <MakeList userUID={userUID}/>
 
             <div>
                 <ProgressContainer>
-                    <Progress width={ count*100/list.length + "%"}></Progress>
+                    <Progress width={ count*100/list.length + "%"}> 
+                    </Progress>
+                    
                 </ProgressContainer>
                 {
                     list.map((a, i) => {                        
                         return(
-                            <List key={i} userUID={userUID} a={a} checkedItems={checkedItems} setCheckedItems={setCheckedItems} setCount={setCount} count={count}/>
+                            <List key={i} userUID={userUID} a={a} checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
                         )
                     })
                 }

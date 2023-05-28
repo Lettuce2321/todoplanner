@@ -28,6 +28,7 @@ function MakeList({userUID}) {
             <input
             type="text"
             name="todo"
+            value={toDoSection}
             placeholder="Write what you have to do!"
             onChange={onChange}
             required />

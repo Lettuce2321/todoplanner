@@ -1,29 +1,27 @@
 import React from "react";
-import { useState } from "react";
 import { dbdeleteDoc, dbDoc, dbService, dbUpdataDoc } from "../fbase";
 
-function List({userUID, a, checkedItems, setCheckedItems, setCount }) {
+function List({userUID, a, checkedItems, setCheckedItems }) {
     const docRef = dbDoc(dbService, userUID.toString(), a.id);
 
-    const [bChecked, setChecked] = useState(a.isChecked);    
-
     const checkedItemHandler = async(id, isChecked) => {
-
+        console.log(!isChecked && checkedItems.has(id));
         if (isChecked) {
+            console.log("check");
             checkedItems.add(id);
             setCheckedItems(checkedItems);
-            setCount((prev) => (prev+1));
             await dbUpdataDoc(docRef, {isChecked: true});
+            console.log(a.isChecked);
         } else if (!isChecked && checkedItems.has(id)) {
+            console.log("uncheck");
             checkedItems.delete(id);
             setCheckedItems(checkedItems);
             await dbUpdataDoc(docRef, {isChecked: false});
-            setCount((prev) => (prev-1));
+            console.log(a.isChecked);
         }
     };
-    const checkHandler = async(id, { target }) => {
+    const checkHandler = (id, { target }) => {
         checkedItemHandler(id, target.checked);
-        await dbUpdataDoc(docRef, {isChecked: checkedItems.has(a.id)});
     };
 
     return (

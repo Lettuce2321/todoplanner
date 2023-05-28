@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { authServise } from "../fbase";
+import { authService } from "../fbase";
 import { Link, useNavigate } from "react-router-dom"
-import { async } from "@firebase/util";
 
 const CreateUser = () => {
 
@@ -10,6 +9,7 @@ const CreateUser = () => {
     
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
+    let [error, setError] = useState("");
 
     const onChange = function(e) {
         let {target: {name, value}} = e;
@@ -23,10 +23,10 @@ const CreateUser = () => {
         e.preventDefault();
 
         try {
-            await createUserWithEmailAndPassword(authServise, email, password)
+            await createUserWithEmailAndPassword(authService, email, password)
             navigate('/', {replace: true})
         } catch(e) {
-            console.log(e.message);
+            setError(e.message);
         }
     }
 
@@ -51,6 +51,7 @@ const CreateUser = () => {
                 value="Log In"
                 onClick={()=> {console.log('click')}} />
             </form>
+            {error && <span>{error}</span>}
             <div>
                 <span>Are you existing user?</span>
                 <Link to="/">Login</Link>

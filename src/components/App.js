@@ -1,19 +1,21 @@
 import React, {useState, useEffect} from "react";
 import Router from "./Router.js";
-import { authServise } from "../fbase.js";
+import { authService } from "../fbase.js";
 
 function App() {
   
   let [init, setInit] = useState(false);
   let [isLoggedin, setIsLoggedIn] = useState(false);
+  let [userObj, setUserObj] = useState(null);
 
   useEffect(() => {
-    authServise.onAuthStateChanged((user) => {
+    authService.onAuthStateChanged((user) => {
       if(user) {
-        console.log(user);
         setIsLoggedIn(true);
+        setUserObj(user);
       } else {
         setIsLoggedIn(false)
+        setUserObj(null);
       }
       setInit(true);
     })
@@ -22,7 +24,7 @@ function App() {
   return (
     <>
       {
-        init ? <Router isLoggedin={isLoggedin}/> : <h1>Initializing!</h1>
+        init ? <Router isLoggedin={isLoggedin} userObj={userObj} /> : <h1>Initializing!</h1>
       }
     </>
   );
